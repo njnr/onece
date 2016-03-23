@@ -67,3 +67,6 @@ target/
 
 # emacs
 *.*~
+
+# database file
+*.sqlite
