@@ -1,9 +1,11 @@
 from flask import render_template, session, redirect, url_for, current_app
 from .. import db
-from ..models import User
+from ..models import User, Permission
 from ..email import send_email
 from . import main
 from .forms import NameForm
+from ..decorators import admin_required, permission_required
+from flask.ext.login import login_required
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -27,3 +29,15 @@ def index():
                            form=form, name=session.get('name'),
                            known=session.get('known', False))
 
+
+@main.route('/admin')
+@login_required
+@admin_required
+def for_admins_only():
+    return "for administrators!"
+
+@main.route('/moderator')
+@login_required
+@permission_required(Permission.MODERATE_COMMENTS)
+def for_moderators_only():
+    return "for comment moderators!"

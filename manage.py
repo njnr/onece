@@ -26,6 +26,7 @@ def test():
 def loaddb():
     db.drop_all()
     db.create_all()
+    Role.insert_roles()
     
 if __name__ == '__main__':
     manager.run()
