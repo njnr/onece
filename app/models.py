@@ -1,4 +1,4 @@
-from datetime import datatime
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
@@ -56,8 +56,8 @@ class User(UserMixin, db.Model):
     confirmed = db.Column(db.Boolean, default=False)
     name = db.Column(db.String(64))
     about_me = db.Column(db.Text())
-    member_since = db.Column(db.datetime(), default=datetime.utcnow)
-    last_seen = db.Column(db.datetime(), default=datetime.utcnow)
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
     def __init__(self,**kwargs):
         super(User, self).__init__(**kwargs)

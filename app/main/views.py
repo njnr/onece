@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from flask import render_template, session, redirect, url_for, current_app
 from .. import db
 from ..models import User, Permission
@@ -28,6 +30,16 @@ def index():
     return render_template('index.html',
                            form=form, name=session.get('name'),
                            known=session.get('known', False))
+
+@main.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('user.html', user = user)
+
+@main.route('/read')
+def read():
+    return "这是我女儿11天的时候拍的照片，小脚丫超级可爱呀！"
+
 
 
 @main.route('/admin')
