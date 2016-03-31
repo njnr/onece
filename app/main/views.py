@@ -35,6 +35,24 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('user.html', user = user)
 
+@main.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.location = form.location.data
+        current_user.about_me = form.about_me.data
+        db.session.add(current_user)
+        flash('Your profile has been updated.')
+        return redirect(url_for('.user', username=current_user.username))
+    form.name.data = current_user.name
+    form.location.data = current_user.location
+    form.about_me.data = current_user.about_me
+
+
+
+
 @main.route('/read')
 def read():
     return "这是我女儿11天的时候拍的照片，小脚丫超级可爱呀！"
