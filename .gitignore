@@ -70,3 +70,6 @@ target/
 
 # database file
 *.sqlite
+
+# mac dir
+.DS_Store
