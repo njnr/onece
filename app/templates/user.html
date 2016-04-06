@@ -9,7 +9,7 @@
     <p>
         {% if user.name %}{{ user.name }}{% endif %}
         {% if user.location %}
-            From <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a>
+            From <a href="http://maps.baidu.com/?q={{ user.location }}">{{ user.location }}</a>
         {% endif %}
     </p>
     {% endif %}
@@ -27,4 +27,6 @@
         {% endif %}
     </p>
 </div>
+<h3>Posts by {{ user.username }}</h3>
+{% include '_posts.html' %}
 {% endblock %}

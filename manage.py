@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 from app import create_app, db
-from app.models import User, Role
+from app.models import User, Role, Permission
 from flask.ext.script import Manager, Shell
 
 
@@ -27,6 +27,20 @@ def loaddb():
     db.drop_all()
     db.create_all()
     Role.insert_roles()
+    u = User(email='skyfan1981@gmail.com', username='harry', password='single', 
+        confirmed=True)
+    u1 = User(email='harry.fan@foxmail.com', username='imguagua', password='single',
+        confirmed=True)
+    db.session.add(u)
+    db.session.add(u1)
+    db.session.commit()
     
+    u.role = Role.query.filter_by(permissions=0xff).first()
+    u1.role =Role.query.filter_by(default=True).first()
+    db.session.add(u)
+    db.session.add(u1)
+    print u.role
+    print u1.role
+
 if __name__ == '__main__':
     manager.run()

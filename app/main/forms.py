@@ -6,6 +6,11 @@ from wtforms import ValidationError
 from ..models import User,Role
 
 
+class PostForm(Form):
+    body = TextAreaField("What's on your mind?", validators=[Required()])
+    submit = SubmitField('Submit')
+    
+
 class NameForm(Form):
     name = StringField('What is your name?', validataors=[Required()])
     submit = SubmitField('Submit')

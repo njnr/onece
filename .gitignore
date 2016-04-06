@@ -68,6 +68,10 @@ target/
 # emacs
 *.*~
 
+#vim
+.*.swp
+.*.swo
+
 # database file
 *.sqlite
 
