@@ -3,6 +3,26 @@
 {% block title %}Flasky - {{ user.username }}{% endblock %}
 
 {% block page_content %}
+<script type="text/javascript">
+    function checkposi(){
+
+        if (navigator.geolocation){
+             navigator.geolocation.getCurrentPosition(successFunction);
+        }
+        else{
+            alert('not suport');
+        }
+    }
+    function successFunction(position){
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+
+        alert('you lat is:' + lat +' and long is :' + long);
+    }
+    //alert(navigator.geolocation);
+    checkposi();
+</script>
+<a href="#" onclick="checkposi()">assss</a>
 <div class="page-header">
     <h1>{{ user.username }}</h1>
     {% if user.name or user.location %}
