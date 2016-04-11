@@ -2,9 +2,9 @@
 from flask import render_template, redirect, url_for, abort, flash, request,\
     current_app
 from .. import db
-from ..models import User, Role, Permission, Post
+from ..models import User, Role, Permission, Post, Location
 from . import main
-from .forms import EditProfileForm, EditProfileAdminForm, PostForm
+from .forms import EditProfileForm, EditProfileAdminForm, PostForm, LocationForm
 from ..decorators import admin_required, permission_required
 from flask.ext.login import login_required, current_user
 
@@ -30,6 +30,16 @@ def index():
 def post(id):
     post = Post.query.get_or_404(id)
     return render_template('post.html', posts=[post])
+
+@main.route('/locations')
+def locations():
+    page = request.args.get('page', 1, type=int)
+    pagination = Location.query.order_by(Location.timestamp.desc()).paginate(
+        page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+        error_out=False)
+    locations = pagination.items
+    return render_template('locations.html', locations=locations, 
+                            pagination=pagination)
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required

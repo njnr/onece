@@ -7,6 +7,12 @@ from wtforms import ValidationError
 from ..models import User,Role
 
 
+class LocationForm(Form):
+    name = StringField('名称', validators=[Required(), Length(1,64)])
+    desc = PageDownField("描述", validators=[Required()])
+    submit = SubmitField('确认')
+
+    
 class PostForm(Form):
     body = PageDownField("What's on your mind?", validators=[Required()])
     submit = SubmitField('Submit')

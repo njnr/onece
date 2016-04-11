@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 from app import create_app, db
-from app.models import User, Role, Permission, Post
+from app.models import User, Role, Permission, Post, Location
 from flask.ext.script import Manager, Shell
 
 
@@ -41,6 +41,7 @@ def loaddb():
     db.session.add(u1)
     User.generate_fake(100)
     Post.generate_fake(1000)
+    Location.generate_fake(10)
     print u.role
     print u1.role
 

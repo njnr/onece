@@ -1,0 +1,18 @@
+<ul class="posts">
+    {% for location in locations %}
+    <li class="post">
+        <div class="post-content">
+            <div class="post-top"><a href="{{ url_for('.locations', id=location.id)}}">{{ location.name }}</a>
+            <p>{{ location.author.username }} 建立于 {{ moment(location.timestamp).format('L') }}</p>
+            </div>
+            <div class="post-body">
+                {% if location.desc_html %}
+                    {{ location.desc_html | safe }}
+                {% else %}
+                    {{ location.desc }}
+                {% endif %}
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>

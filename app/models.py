@@ -81,6 +81,8 @@ class User(UserMixin, db.Model):
                                 backref=db.backref('followed', lazy='joined'),
                                 lazy='dynamic',
                                 cascade='all, delete-orphan')
+    locations = db.relationship('Location', backref='author', lazy='dynamic')
+    
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
@@ -251,4 +253,43 @@ class Post(db.Model):
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
 
+
+class Location(db.Model):
+    __tablename__ = 'locations'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    desc = db.Column(db.Text)
+    desc_html = db.Column(db.Text)
+    x = db.Column(db.Float, default=0)
+    y = db.Column(db.Float, default=0)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    @staticmethod
+    def on_changed_desc(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+                        'h1', 'h2', 'h3', 'p']
+        target.desc_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
+
+
+    @staticmethod
+    def generate_fake(count=10):
+        from random import seed, randint
+        import forgery_py
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            u = User.query.offset(randint(0, user_count - 1)).first()
+            p = Location(desc=forgery_py.lorem_ipsum.sentences(randint(1,5)),
+                     timestamp=forgery_py.date.date(True),
+                     name=forgery_py.internet.user_name(True),
+                     author=u)
+            db.session.add(p)
+            db.session.commit()
+
 db.event.listen(Post.body, 'set', Post.on_changed_body)
+db.event.listen(Location.desc, 'set', Location.on_changed_desc)
