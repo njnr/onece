@@ -39,6 +39,8 @@ def loaddb():
     u1.role =Role.query.filter_by(default=True).first()
     db.session.add(u)
     db.session.add(u1)
+    User.generate_fake(100)
+    Post.generate_fake(1000)
     print u.role
     print u1.role
 
