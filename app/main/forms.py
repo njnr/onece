@@ -1,6 +1,7 @@
 # coding: utf-8
 from flask.ext.wtf import Form
-from wtforms import StringField, SubmitField,TextAreaField,BooleanField, SelectField
+from wtforms import StringField, SubmitField,TextAreaField,BooleanField, SelectField, \
+                    HiddenField
 from flask.ext.pagedown.fields import PageDownField
 from wtforms.validators import Required, Length, Email, Regexp
 from wtforms import ValidationError
@@ -10,6 +11,7 @@ from ..models import User,Role
 class LocationForm(Form):
     name = StringField('名称', validators=[Required(), Length(1,64)])
     desc = PageDownField("描述", validators=[Required()])
+#    xy = 
     submit = SubmitField('确认')
 
     
@@ -52,11 +54,11 @@ class EditProfileAdminForm(Form):
 
     def validate_email(self, field):
         if field.data != self.user.email and \
-            user.query.filter_by(email,field.data).first():
+            User.query.filter_by(email,field.data).first():
             raise ValidationError('Email already registered.')
             
     def validate_username(self, field):
         if field.data != self.user.username and \
-            user.query.filter_by(email=field.data).first():
+            User.query.filter_by(email=field.data).first():
             raise ValidationError('Username already in use.')
 
