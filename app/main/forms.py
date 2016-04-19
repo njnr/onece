@@ -62,3 +62,7 @@ class EditProfileAdminForm(Form):
             User.query.filter_by(email=field.data).first():
             raise ValidationError('Username already in use.')
 
+
+class CommentForm(Form):
+    body = StringField('Enter your comment', validators=[Required()])
+    submit = SubmitField('Submit')
